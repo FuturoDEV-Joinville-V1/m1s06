@@ -80,5 +80,69 @@ DELETE FROM public.enderecos WHERE id = 1;
 SELECT * FROM public.clientes WHERE data_nascimento < '01/01/1900';
 DELETE FROM public.clientes WHERE data_nascimento < '01/01/1900';
 
+SELECT nome FROM public.clientes
+GROUP BY nome;
+
+SELECT COUNT(*) FROM public.clientes;
+
+SELECT nome, COUNT(nome) 
+FROM public.clientes
+GROUP BY nome;
+
+SELECT * FROM clientes;
+
+ALTER TABLE public.clientes ADD estado_civil character varying (16);
+ALTER TABLE public.clientes ADD altura numeric;
+
+SELECT COUNT(*) AS qtd_casados 
+FROM clientes 
+WHERE estado_civil = 'solteiro';
+
+SELECT COUNT(nome) AS quantidade, estado_civil 
+FROM clientes
+GROUP BY estado_civil;
+
+-- calcular media de idade dos clientes
+SELECT AVG(idade) AS media_idade_clientes FROM (SELECT AGE(current_date, data_nascimento) AS idade FROM clientes);
+
+-- calcular media altura clientes
+SELECT AVG(altura) AS media_altura
+FROM clientes;
+
+-- calcular media altura clientes maiores de 18 anos
+SELECT AVG(altura) AS media_altura
+FROM clientes
+WHERE date_part('year', AGE(current_date, data_nascimento)) >= 18;
+
+select *
+FROM clientes
+WHERE date_part('year', AGE(current_date, data_nascimento)) >= 18;
+
+SELECT SUM(idade) FROM (
+SELECT date_part('year', AGE(current_date, data_nascimento)) AS idade
+FROM clientes
+)
+
+SELECT MAX(idade) FROM (
+SELECT date_part('year', AGE(current_date, data_nascimento)) AS idade
+FROM clientes
+)
+
+SELECT SUM(altura) FROM CLIENTES;
+SELECT MAX(altura) FROM clientes;
+SELECT MIN(altura) FROM clientes;
+
+INSERT INTO contas_corrente (id_cliente, saldo) VALUES (9, 10);
+INSERT INTO contas_corrente (id_cliente, saldo) VALUES (13, 20);
+INSERT INTO contas_corrente (id_cliente, saldo) VALUES (5, 10);
+INSERT INTO contas_corrente (id_cliente, saldo) VALUES (6, 20);
+INSERT INTO contas_corrente (id_cliente, saldo) VALUES (12, 20);
+
+SELECT * FROM CONTAS_CORRENTE;
+
+SELECT cc.*, c.nome as nome_cliente
+FROM contas_corrente cc
+INNER JOIN clientes c ON cc.id_cliente = c.id
+WHERE c.nome = 'Allan';
 
 
